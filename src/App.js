@@ -6,11 +6,16 @@ import {Provider} from 'react-redux';
 import Header from './components/Header';
 import {View, StyleSheet} from 'react-native';
 import Navigator from './Navigation';
+import reducers from './reducers';
 export default class App extends React.Component {
   componentDidMount() {}
 
   render() {
-    const store = createStore({}, {}, applyMiddleware(ReduxThunkMiddleWare));
+    const store = createStore(
+      reducers,
+      {},
+      applyMiddleware(ReduxThunkMiddleWare),
+    );
     return (
       <Provider store={store}>
         <SafeAreaView style={styles.container}>
