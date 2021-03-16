@@ -1,7 +1,13 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {getLocations} from '../actions/LocationActions';
-import {View, StyleSheet, Text, Dimensions} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Dimensions,
+  ActivityIndicator,
+} from 'react-native';
 import Pie from 'react-native-pie';
 import {max} from 'react-native-reanimated';
 
@@ -14,50 +20,54 @@ class LocationsList extends React.Component {
     const locs = this.props.locations ? this.props.locations : [];
     return (
       <View style={styles.locationListContainer}>
-        {locs.map((loc, index) => {
-          return (
-            <View key={index} style={styles.locationListItem}>
-              <View style={{flex: 2, justifyContent: 'center'}}>
-                <Text style={styles.roomNameText}>{loc.name}</Text>
-                <Text>{loc.building}</Text>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                  padding: 5,
-                }}>
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                  <Pie
-                    radius={25}
-                    innerRadius={20}
-                    sections={[
-                      {
-                        percentage: 100 * (loc.occupancy / loc.maxOccupancy),
-                        color: 'orange',
-                      },
-                      {
-                        percentage:
-                          100 *
-                          ((loc.maxOccupancy - loc.occupancy) /
-                            loc.maxOccupancy),
-                        color: '#d5dbe3',
-                      },
-                    ]}
-                    strokeCap={'butt'}
-                  />
-                  <View style={styles.gauge}>
-                    <Text style={styles.gaugeText}>
-                      {loc.occupancy}/{loc.maxOccupancy}
-                    </Text>
+        {locs.length > 0
+          ? locs.map((loc, index) => {
+              return (
+                <View key={index} style={styles.locationListItem}>
+                  <View style={{flex: 2, justifyContent: 'center'}}>
+                    <Text style={styles.roomNameText}>{loc.name}</Text>
+                    <Text>{loc.building}</Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                      padding: 5,
+                    }}>
+                    <View
+                      style={{alignItems: 'center', justifyContent: 'center'}}>
+                      <Pie
+                        radius={25}
+                        innerRadius={20}
+                        sections={[
+                          {
+                            percentage:
+                              100 * (loc.occupancy / loc.maxOccupancy),
+                            color: 'orange',
+                          },
+                          {
+                            percentage:
+                              100 *
+                              ((loc.maxOccupancy - loc.occupancy) /
+                                loc.maxOccupancy),
+                            color: '#d5dbe3',
+                          },
+                        ]}
+                        strokeCap={'butt'}
+                      />
+                      <View style={styles.gauge}>
+                        <Text style={styles.gaugeText}>
+                          {loc.occupancy}/{loc.maxOccupancy}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
                 </View>
-              </View>
-            </View>
-          );
-        })}
+              );
+            })
+          : [<ActivityIndicator size="large" color="#0000ff" />]}
       </View>
     );
   }
