@@ -3,6 +3,7 @@ import {RETRIEVED_LOCATIONS} from '../actions/types';
 
 const INITIAL_STATE = {
   locations: [],
+  organizationID: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
