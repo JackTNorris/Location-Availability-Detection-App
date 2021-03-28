@@ -1,1 +1,4 @@
 export const RETRIEVED_LOCATIONS = 'RETRIEVED_LOCATIONS';
+
+export const LOGGED_IN = 'LOGGED_IN';
+export const LOGGED_IN_ERROR = 'LOGGED_IN_ERROR';

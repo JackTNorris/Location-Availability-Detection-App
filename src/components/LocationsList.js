@@ -7,15 +7,29 @@ import {
   Text,
   Dimensions,
   ActivityIndicator,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Pie from 'react-native-pie';
-import {max} from 'react-native-reanimated';
 
 class LocationsList extends React.Component {
   componentDidMount = () => {
     this.props.getLocs('uark');
   };
 
+  directionsPopup = () => {
+    Alert.alert('Directions', 'Would you like directions here?', [
+      {
+        text: 'Yes, take me here!',
+        onPress: () => console.log('Ask me later pressed'),
+      },
+      {
+        text: 'No Thanks',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+    ]);
+  };
   render() {
     const locs = this.props.locations ? this.props.locations : [];
     return (
@@ -23,7 +37,7 @@ class LocationsList extends React.Component {
         {locs.length > 0
           ? locs.map((loc, index) => {
               return (
-                <View key={index} style={styles.locationListItem}>
+                <TouchableOpacity key={index} style={styles.locationListItem} onPress={this.directionsPopup}>
                   <View style={{flex: 2, justifyContent: 'center'}}>
                     <Text style={styles.roomNameText}>{loc.name}</Text>
                     <Text>{loc.building}</Text>
@@ -64,7 +78,7 @@ class LocationsList extends React.Component {
                       </View>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               );
             })
           : [<ActivityIndicator size="large" color="#0000ff" />]}
@@ -77,7 +91,7 @@ const styles = StyleSheet.create({
   locationListContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 5,
   },
   locationListItem: {
     height: 70,

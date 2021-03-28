@@ -23,7 +23,7 @@ export default class App extends React.Component {
             <View style={{flex: 1}}>
               <Header />
             </View>
-            <View style={{flex: 9}}>
+            <View style={{flex: 10}}>
               <Navigator />
             </View>
           </View>
