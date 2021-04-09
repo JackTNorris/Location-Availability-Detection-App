@@ -11,17 +11,40 @@ import {
   Alert,
 } from 'react-native';
 import Pie from 'react-native-pie';
+import getDirections from 'react-native-google-maps-directions';
+
 
 class LocationsList extends React.Component {
   componentDidMount = () => {
     this.props.getLocs('uark');
   };
 
-  directionsPopup = () => {
+  handleGetDirections = (loc) => {
+    const data = {
+      destination: {
+        latitude: loc.latitude,
+        longitude: loc.longitude,
+      },
+      params: [
+        {
+          key: 'travelmode',
+          value: 'walking', // may be "walking", "bicycling" or "transit" as well
+        },
+        {
+          key: 'dir_action',
+          value: 'navigate', // this instantly initializes navigation using the given travel mode
+        },
+      ],
+    };
+
+    getDirections(data);
+  };
+
+  directionsPopup = (loc) => {
     Alert.alert('Directions', 'Would you like directions here?', [
       {
         text: 'Yes, take me here!',
-        onPress: () => console.log('Ask me later pressed'),
+        onPress: () => this.handleGetDirections(loc),
       },
       {
         text: 'No Thanks',
@@ -30,6 +53,7 @@ class LocationsList extends React.Component {
       },
     ]);
   };
+
   render() {
     const locs = this.props.locations ? this.props.locations : [];
     return (
@@ -37,7 +61,10 @@ class LocationsList extends React.Component {
         {locs.length > 0
           ? locs.map((loc, index) => {
               return (
-                <TouchableOpacity key={index} style={styles.locationListItem} onPress={this.directionsPopup}>
+                <TouchableOpacity
+                  key={index}
+                  style={styles.locationListItem}
+                  onPress={() => this.directionsPopup(loc)}>
                   <View style={{flex: 2, justifyContent: 'center'}}>
                     <Text style={styles.roomNameText}>{loc.name}</Text>
                     <Text>{loc.building}</Text>
